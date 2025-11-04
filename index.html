@@ -6,17 +6,19 @@
 <meta name="color-scheme" content="light dark">
 <title>DASS-21 Self-Assessment (UiTMCPP)</title>
 <style>
-/* ===== High-Contrast NAVY (Default) ===== */
+/* ===== UiTM Dark Navy Edition ===== */
 :root{
-  --bg:#0a1744;          /* navy background */
-  --ink:#ffffff;         /* main text: white */
-  --muted:#d1d5db;       /* secondary text */
-  --card:#0f1e5a;        /* card surface */
-  --border:#1e2b7a;      /* borders */
+  --bg:#00023E;       /* deep navy blue background */
+  --ink:#ffffff;      /* main text white */
+  --muted:#e0e7ff;    /* soft secondary text */
+  --card:#060a57;     /* slightly lighter navy surface */
+  --border:#11187a;   /* border tone */
 
-  --accent:#ffd34e;      /* bright amber */
-  --accent2:#6ee7ff;     /* bright cyan */
+  /* UiTM signature accents */
+  --accent:#f0b429;   /* UiTM gold */
+  --accent2:#5a2e8a;  /* UiTM purple */
 
+  /* Severity colors (kept vivid) */
   --ok:#34d399; --mild:#fbbf24; --mod:#fb923c; --sev:#ef4444; --xsev:#f43f5e;
 }
 
@@ -25,13 +27,21 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetic
 .wrap{max-width:980px;margin:28px auto;padding:20px}
 header{display:block;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:12px}
 
-/* Masthead refined */
+/* Masthead */
 .masthead{display:flex;align-items:center;gap:18px;margin-bottom:8px}
-.uitm-logo{flex:0 0 70px;height:70px;display:flex;align-items:center;justify-content:center}
-.uitm-logo img{max-height:65px;width:auto;display:block}
+.uitm-logo{
+  flex:0 0 70px;height:70px;
+  display:flex;align-items:center;justify-content:center;
+  background:#ffffff;                      /* white badge to fix transparent logo */
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;
+  padding:6px;
+  box-shadow:0 0 12px rgba(255,255,255,.08);
+}
+.uitm-logo img{max-height:58px;width:auto;display:block}
 .uitm-logo .fallback{
-  display:none;width:65px;height:65px;border-radius:8px;
-  background:linear-gradient(135deg,#6ee7ff,#ffd34e);color:#081236;
+  display:none;width:100%;height:100%;border-radius:10px;
+  background:linear-gradient(135deg,#5a2e8a,#f0b429);color:#fff;
   font-weight:800;align-items:center;justify-content:center
 }
 .titles h2{margin:0;font-size:20px;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;font-weight:800}
@@ -40,50 +50,51 @@ header{display:block;margin-bottom:16px;border-bottom:1px solid var(--border);pa
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
 button{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
 .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0b0b}
-.ghost{background:transparent;border:1px solid #3a4bb0;color:var(--ink)}
+.ghost{background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--ink)}
 .okbtn{background:rgba(52,211,153,.18);border:1px solid rgba(52,211,153,.6);color:#e7fff5}
 
 /* Cards & layout */
-.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:18px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.22);padding:18px;margin:14px 0}
 .muted{color:var(--muted)}
 .legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
-.chip{padding:6px 10px;border-radius:12px;border:1px solid #2b3c96;font-size:12px;text-align:center;color:var(--muted);background:#0b1b52}
+.chip{padding:6px 10px;border-radius:12px;border:1px solid #19248e;font-size:12px;text-align:center;color:var(--muted);background:#0b1482}
 .grid{display:grid;grid-template-columns:1fr;gap:16px}
 @media(min-width:860px){.grid{grid-template-columns:1.5fr .9fr}}
 
 /* Questions */
-.q{padding:16px;border-radius:14px;background:#0b1b52;border:1px solid var(--border)}
+.q{padding:16px;border-radius:14px;background:#0b1482;border:1px solid var(--border)}
 .q h3{margin:0 0 10px;font-size:16px;line-height:1.4;white-space:pre-line}
 .opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 
-/* Options with strong contrast */
+/* Options with strong contrast on navy */
 .opt{
-  padding:10px;border:1px solid #3a4bb0;border-radius:10px;text-align:center;
-  cursor:pointer;background:#0f205f;color:#eaf2ff;transition:all .15s ease;
+  padding:10px;border:1px solid #2b4fb6;border-radius:10px;text-align:center;
+  cursor:pointer;background:#1144a4;color:#eef3ff;transition:all .15s ease;
 }
-.opt:hover{background:#17307f;border-color:#7dd3fc}
+.opt:hover{background:#1652c7;border-color:#7dd3fc}
 input[type=radio]{display:none}
 input[type=radio]:checked + .opt{
-  border-color:#ffdf7a;
-  background:linear-gradient(180deg,rgba(255,211,78,.42),rgba(110,231,255,.28));
-  color:#0b0b0b;font-weight:800;box-shadow:0 0 0 3px rgba(255,211,78,.35);
+  border-color:var(--accent);
+  background:linear-gradient(180deg,rgba(240,180,41,.42),rgba(90,46,138,.28)); /* gold→purple */
+  color:#0b0b0b;font-weight:800;box-shadow:0 0 0 3px rgba(240,180,41,.35);
 }
 
 /* Results */
 .result h2{margin:0 0 6px}
 .scores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.score{padding:14px;border-radius:14px;border:1px solid var(--border);background:#0b1b52}
+.score{padding:14px;border-radius:14px;border:1px solid var(--border);background:#0b1482}
 .score .num{font-size:28px;font-weight:800}
 .sev{font-weight:800}
 .sev.normal{color:var(--ok)} .sev.mild{color:var(--mild)} .sev.moderate{color:var(--mod)} .sev.severe{color:var(--sev)} .sev.extreme{color:var(--xsev)}
 .disclaimer{font-size:13px;line-height:1.45}
 .req{color:#ffe08a;font-weight:700}
 footer{margin-top:24px;color:var(--muted);font-size:12px}
+.result hr{border:none;border-top:1px solid var(--border)}
 
 /* Links */
 a{color:#7dd3fc}
 
-/* ===== Classic LIGHT (toggled via body.dark) ===== */
+/* ===== Toggled theme = Classic LIGHT (white UI) ===== */
 body.dark{
   --bg:#ffffff; --ink:#111827; --muted:#4b5563;
   --card:#ffffff; --border:#e5e7eb;
@@ -95,7 +106,6 @@ body.dark header{ border-bottom:1px solid var(--border); }
 body.dark .q, body.dark .score{ background:#fafafa; border:1px solid var(--border); }
 body.dark .chip{ border:1px solid rgba(17,24,39,.15); color:var(--muted); background:#fff; }
 body.dark .ghost{ border:1px solid rgba(17,24,39,.16); color:var(--ink); }
-
 body.dark .opt{ background:#fff; color:#111827; border:1px solid #cbd5e1; }
 body.dark .opt:hover{ background:#eef2ff; border-color:#5b21b6; }
 body.dark input[type=radio]:checked + .opt{
@@ -110,8 +120,8 @@ body.dark input[type=radio]:checked + .opt{
   <header>
     <div class="masthead">
       <div class="uitm-logo">
-        <!-- Upload 'uitm-logo.png' di root repo; kalau tiada, fallback teks -->
-        <img alt="Universiti Teknologi MARA" src="uitm-logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <img alt="Universiti Teknologi MARA" src="uitm-logo.png"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
         <div class="fallback">UiTM</div>
       </div>
       <div class="titles">
@@ -232,7 +242,7 @@ body.dark input[type=radio]:checked + .opt{
         <button class="primary" id="btnDownloadCSV" title="Download CSV (author only)" style="display:none">Download CSV</button>
         <button class="ghost" id="btnSaveSheet" title="Save to Google Sheet (author only)" disabled style="display:none">Save to Sheet</button>
       </div>
-      <hr style="border:none;border-top:1px solid var(--border);margin:14px 0">
+      <hr>
       <div class="disclaimer">
         <strong>Disclaimer:</strong> This tool is for screening/education, not a diagnosis. If your scores are Moderate or higher, consider consulting a qualified clinician.
         <br><em>Penafian: Alat ini untuk saringan/pendidikan, bukan diagnosis. Jika skor anda Moderate atau lebih tinggi, pertimbangkan untuk berjumpa pengamal klinikal bertauliah.</em>
@@ -437,7 +447,7 @@ function currentResultRow(){
 }
 
 /* --------------- Google Sheet (Apps Script) --------------- */
-const SHEET_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // ganti selepas deploy Web App (/exec)
+const SHEET_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // set later
 const pdpa = document.getElementById('pdpa');
 const btnSaveSheet = document.getElementById('btnSaveSheet');
 pdpa.addEventListener('change', ()=>{ btnSaveSheet.disabled = !pdpa.checked; });
