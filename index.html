@@ -6,132 +6,442 @@
 <title>DASS-21 Self-Assessment (UiTMCPP)</title>
 <style>
 :root{
-  --bg:#fff;--ink:#111827;--muted:#4b5563;
+  --bg:#ffffff;--ink:#111827;--muted:#4b5563;
   --accent:#5a2e8a;--accent2:#f0b429;
-  --ok:#10b981;--warn:#f59e0b;--bad:#ef4444;--xbad:#b91c1c
+  --ok:#10b981;--mild:#f59e0b;--mod:#f97316;--sev:#ef4444;--xsev:#dc2626;
 }
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
-.wrap{max-width:960px;margin:0 auto;padding:20px}
-header{display:block;border-bottom:1px solid #ddd;padding-bottom:8px;margin-bottom:12px}
-.masthead{display:grid;grid-template-columns:96px auto;gap:16px;align-items:center}
-.uitm-logo{width:96px;height:96px;display:flex;align-items:center;justify-content:center}
-.uitm-logo img{max-height:70px;width:auto;display:block}
-.uitm-logo .fallback{display:none;width:96px;height:96px;border-radius:8px;background:linear-gradient(135deg,#5a2e8a,#f0b429);color:#fff;font-weight:700;align-items:center;justify-content:center}
-.titles h2{margin:0;font-size:22px;text-transform:uppercase}
-.titles h3{margin:2px 0 0;font-size:18px;text-transform:uppercase}
-button{border:0;border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
-.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff}
-.ghost{background:#fff;border:1px solid #ccc}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;margin:14px 0;box-shadow:0 4px 10px rgba(0,0,0,.03)}
-.q{padding:12px;border-radius:12px;background:#fafafa;border:1px solid #e5e7eb;margin-bottom:10px}
-.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.opt{padding:8px;border:1px solid #ccc;border-radius:10px;text-align:center;cursor:pointer}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:980px;margin:28px auto;padding:20px}
+header{display:block;margin-bottom:16px;border-bottom:1px solid #e5e7eb;padding-bottom:12px}
+
+/* Masthead refined */
+.masthead{display:flex;align-items:center;gap:18px;margin-bottom:8px}
+.uitm-logo{flex:0 0 70px;height:70px;display:flex;align-items:center;justify-content:center}
+.uitm-logo img{max-height:65px;width:auto;display:block}
+.uitm-logo .fallback{display:none;width:65px;height:65px;border-radius:8px;background:linear-gradient(135deg,#5a2e8a,#f0b429);color:#fff;font-weight:800;align-items:center;justify-content:center}
+.titles h2{margin:0;font-size:20px;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;font-weight:800}
+.titles h3{margin:2px 0 0;font-size:16px;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;font-weight:800}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
+button{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer}
+.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:white}
+.ghost{background:transparent;border:1px solid rgba(17,24,39,.16);color:var(--ink)}
+.okbtn{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.35)}
+
+/* Cards & layout */
+.card{background:#fff;border:1px solid rgba(17,24,39,.08);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.04);padding:18px;margin:14px 0}
+.muted{color:var(--muted)}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:8px}
+.chip{padding:6px 10px;border-radius:12px;border:1px solid rgba(17,24,39,.15);font-size:12px;text-align:center;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:860px){.grid{grid-template-columns:1.5fr .9fr}}
+
+.q{padding:16px;border-radius:14px;background:#fafafa;border:1px solid #e5e7eb}
+.q h3{margin:0 0 10px;font-size:16px;line-height:1.4;white-space:pre-line}
+.opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.opt{
+  padding:8px;border:1px solid #ccc;border-radius:10px;text-align:center;cursor:pointer;background:#fff;transition:all .2s ease;
+}
+.opt:hover{background:rgba(90,46,138,.08);border-color:var(--accent)}
 input[type=radio]{display:none}
-input[type=radio]:checked + .opt{border-color:var(--accent);background:rgba(90,46,138,.1)}
-.score{border:1px solid #e5e7eb;border-radius:10px;padding:12px;margin-top:10px;background:#fafafa}
-.sev.normal{color:var(--ok)}.sev.mild{color:var(--warn)}.sev.moderate{color:orange}.sev.severe{color:var(--bad)}.sev.extreme{color:var(--xbad)}
+input[type=radio]:checked + .opt{
+  border-color:var(--accent);
+  background:linear-gradient(180deg,rgba(90,46,138,.25),rgba(90,46,138,.15));
+  color:#000;font-weight:600;box-shadow:0 0 0 2px rgba(90,46,138,.25);
+}
+
+/* Results */
+.result h2{margin:0 0 6px}
+.scores{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.score{padding:14px;border-radius:14px;border:1px solid rgba(17,24,39,.12);background:#fafafa}
+.score .num{font-size:28px;font-weight:800}
+.sev{font-weight:700}
+.sev.normal{color:var(--ok)} .sev.mild{color:var(--mild)} .sev.moderate{color:var(--mod)} .sev.severe{color:var(--sev)} .sev.extreme{color:var(--xsev)}
+.disclaimer{font-size:13px;line-height:1.45}
+.req{color:#b45309;font-weight:600}
+footer{margin-top:24px;color:var(--muted);font-size:12px}
+
+body.dark .opt{background:#1f1f1f;border-color:#444;color:#e0e0e0}
+body.dark input[type=radio]:checked + .opt{
+  background:linear-gradient(180deg,rgba(240,180,41,.3),rgba(90,46,138,.3));
+  color:#fff;font-weight:700;box-shadow:0 0 0 2px rgba(240,180,41,.3);
+}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header>
-  <div class="masthead">
-    <div class="uitm-logo">
-      <img src="uitm-logo.png" alt="UiTM logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="fallback">UiTM</div>
+  <header>
+    <div class="masthead">
+      <div class="uitm-logo">
+        <!-- Upload 'uitm-logo.png' di root repo; kalau tiada, fallback teks -->
+        <img alt="Universiti Teknologi MARA" src="uitm-logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <div class="fallback">UiTM</div>
+      </div>
+      <div class="titles">
+        <h2>PUSAT TERAPI CARA KERJA</h2>
+        <h3>FAKULTI SAINS KESIHATAN, UiTMCPP KAMPUS BERTAM</h3>
+      </div>
     </div>
-    <div class="titles">
-      <h2>Pusat Terapi Cara Kerja</h2>
-      <h3>Fakulti Sains Kesihatan, UiTMCPP Kampus Bertam</h3>
+    <div class="toolbar">
+      <button class="ghost" id="btnPrint" title="Print or save as PDF">Cetak / PDF</button>
+      <button class="ghost" id="btnReset" title="Clear all responses">Reset</button>
+      <button class="ghost" id="themeToggle" title="Tukar tema">🌙/☀️</button>
+      <button class="ghost" id="btnAdmin" title="Author login">Author Login</button>
     </div>
-  </div>
-</header>
+  </header>
 
-<section class="card">
-  <h2>Persetujuan & PDPA</h2>
-  <p>Saya bersetuju bahawa maklumat yang dikumpul digunakan untuk tujuan penyelidikan dan audit perkhidmatan tanpa identiti peribadi.</p>
-  <label><input type="checkbox" id="pdpa"> Saya bersetuju / I agree</label>
-</section>
+  <!-- Intro -->
+  <section class="card" id="introCard">
+    <h2 style="margin:0 0 4px;text-transform:uppercase">DEPRESSION, ANXIETY AND STRESS SCALE (DASS 21)</h2>
+    <p style="margin:6px 0 6px">The DASS is a self-screening test designed to measure symptoms of depression, anxiety, and stress. DASS will help your therapist understand your current condition and plan appropriate treatment for you. This screening test contains 21 statements. Please provide the most accurate feedback based on your experience in the past <strong>WEEK</strong>. There is no right or wrong answer.</p>
+    <p style="margin:6px 0 0;font-style:italic">DASS adalah ujian saringan kendiri yang direka untuk mengukur simptom kemurungan, kebimbangan dan tekanan. DASS juga dibina bagi membantu terapis cara kerja anda untuk memahami keadaan semasa yang anda alami, serta untuk merancang rawatan yang sesuai untuk anda. Ujian saringan ini mengandungi 21 pernyataan. Sila beri maklumbalas paling tepat terhadap pernyataan berdasarkan keadaan anda pada <strong>SEMINGGU</strong> yang lepas. Tiada jawapan yang betul atau salah.</p>
+  </section>
 
-<section class="card">
-  <h2>Skala DASS-21</h2>
-  <p>Sila jawab semua 21 pernyataan berdasarkan keadaan seminggu lepas.</p>
-  <form id="dassForm">
-    <div id="questions"></div>
-    <button type="button" class="primary" id="btnScore">Kira Skor</button>
-  </form>
-</section>
+  <!-- PDPA + Demographic -->
+  <section class="card" id="consentCard">
+    <h2 style="margin:0 0 8px">Persetujuan & PDPA / Consent & PDPA</h2>
+    <p class="muted" style="margin:0 0 8px"><strong>Pernyataan:</strong> Saya bersetuju bahawa maklumat yang dikumpul melalui laman ini digunakan untuk tujuan penyelidikan dan audit perkhidmatan secara agregat tanpa identiti peribadi. Data yang direkod tidak mengandungi nama/IC dan hanya melibatkan maklumat demografik umum serta skor DASS-21.</p>
+    <p class="muted" style="margin:0 10px 12px 0;font-style:italic"><strong>Statement:</strong> I consent for the information collected on this site to be used for service audit and research in aggregate without personal identifiers. No name/IC is recorded; only general demographics and DASS-21 scores are stored.</p>
+    <label style="display:flex;align-items:center;gap:10px;margin:8px 0 16px 0">
+      <input id="pdpa" type="checkbox"> <span class="muted">Saya bersetuju / I agree</span>
+    </label>
 
-<section class="card">
-  <h2>Keputusan</h2>
-  <div class="score">Depression: <span id="depNum">0</span> (<span id="depSev" class="sev normal">Normal</span>)</div>
-  <div class="score">Anxiety: <span id="anxNum">0</span> (<span id="anxSev" class="sev normal">Normal</span>)</div>
-  <div class="score">Stress: <span id="strNum">0</span> (<span id="strSev" class="sev normal">Normal</span>)</div>
-  <p style="font-size:13px">Disclaimer: This tool is for screening/education, not a diagnosis. If your scores are Moderate or higher, consider consulting a clinician.</p>
-</section>
+    <h3 style="margin:0 0 8px">Please tick where suitable / <em>Sila tandakan yang bersesuaian</em></h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div>
+        <div style="font-weight:600;margin-bottom:6px">I am a / <em>Saya adalah seorang</em></div>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="role" value="Student"> <span>Student / <em>Pelajar</em></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="gender_ck" value="Male"> <span>Male / <em>Lelaki</em></span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="gender_ck" value="Female"> <span>Female / <em>Wanita</em></span>
+        </label>
+      </div>
+      <div>
+        <div style="font-weight:600;margin-bottom:6px">Age range / <em>Umur</em></div>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="age_band" value="18–25"> <span>18–25</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="age_band" value="26–35"> <span>26–35</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="age_band" value="36–45"> <span>36–45</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;margin:6px 0">
+          <input type="checkbox" name="age_band" value="45+"> <span>45 and above / <em>45 ke atas</em></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scale instructions -->
+  <section class="card" id="scaleCard">
+    <p class="muted" style="margin:0 0 8px">
+      Sila baca kenyataan dan pilih nombor 0–3 yang menggambarkan keadaan anda <strong>SEMINGGU YANG LEPAS</strong>. Tiada jawapan betul/salah dan jangan ambil masa terlalu lama. /
+      Please read each statement and choose 0–3 for how much it applied to you <strong>OVER THE PAST WEEK</strong>. There are no right or wrong answers; do not spend too much time on any statement.
+      Skala / Rating scale:
+    </p>
+    <div class="legend">
+      <div class="chip"><strong>0</strong> Tidak pernah sama sekali / Did not apply to me at all</div>
+      <div class="chip"><strong>1</strong> Jarang / Applied to me to some degree, or some of the time</div>
+      <div class="chip"><strong>2</strong> Kerap / Applied to me to a considerable degree, or a good part of time</div>
+      <div class="chip"><strong>3</strong> Sangat kerap / Applied to me very much, or most of the time</div>
+    </div>
+  </section>
+
+  <!-- Main grid -->
+  <main class="grid" style="margin-top:16px">
+    <section class="card">
+      <form id="dassForm">
+        <div id="questions"></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <button type="button" class="primary" id="btnScore">Kira Skor</button>
+          <span class="muted" id="progress">0/21 dijawab</span>
+        </div>
+        <p class="muted" style="margin-top:8px">Fields marked <span class="req">*</span> are required.</p>
+      </form>
+    </section>
+
+    <aside class="card result" id="results" aria-live="polite" aria-atomic="true">
+      <h2>Keputusan</h2>
+      <p class="muted" style="margin-top:0">Skor tidak didarab dua. Klasifikasi ikut julat pada borang DASS-21.</p>
+      <div class="scores" id="scores">
+        <div class="score" id="scoreDep">
+          <div class="muted">Depression</div>
+          <div class="num" data-num>0</div>
+          <div class="sev normal" data-sev>Normal</div>
+        </div>
+        <div class="score" id="scoreAnx">
+          <div class="muted">Anxiety</div>
+          <div class="num" data-num>0</div>
+          <div class="sev normal" data-sev>Normal</div>
+        </div>
+        <div class="score" id="scoreStr">
+          <div class="muted">Stress</div>
+          <div class="num" data-num>0</div>
+          <div class="sev normal" data-sev>Normal</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="okbtn" id="btnCopy">Salin ringkasan</button>
+        <button class="ghost" id="btnClearResults">Kosongkan</button>
+        <button class="primary" id="btnDownloadCSV" title="Muat turun CSV (author only)" style="display:none">Download CSV</button>
+        <button class="ghost" id="btnSaveSheet" title="Simpan ke Google Sheet (author only)" disabled style="display:none">Save to Sheet</button>
+      </div>
+      <hr style="border:none;border-top:1px solid #e5e7eb;margin:14px 0">
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> This tool is for screening/education, not a diagnosis. If your scores are Moderate or higher, consider consulting a qualified clinician.
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    DASS-21 items © P. F. Lovibond &amp; S. H. Lovibond.
+  </footer>
 </div>
 
 <script>
-const items=[
-"1. Saya rasa susah untuk bertenang / I found it hard to wind down",
-"2. Saya sedar mulut saya rasa kering / I was aware of dryness of my mouth",
-"3. Saya tidak dapat mengalami perasaan positif sama sekali / I couldn’t experience positive feeling at all",
-"4. Saya mengalami kesukaran bernafas / I experienced breathing difficulty",
-"5. Saya rasa tidak bersemangat untuk memulakan sesuatu / I found it difficult to work up initiative",
-"6. Saya bertindak secara berlebihan / I tended to over-react",
-"7. Saya pernah menggeletar / I experienced trembling",
-"8. Saya rasa terlalu gelisah / I felt that I was using a lot of nervous energy",
-"9. Saya risau akan berlaku keadaan panik / I was worried about situations in which I might panic",
-"10. Saya rasa tidak ada yang saya harapkan / I felt that I had nothing to look forward to",
-"11. Saya mudah resah / I found myself getting agitated",
-"12. Saya merasa sukar untuk relaks / I found it difficult to relax",
-"13. Saya rasa muram dan sedih / I felt down-hearted and blue",
-"14. Saya tidak boleh terima apa jua yang menghalangi saya / I was intolerant of anything that kept me from getting on",
-"15. Saya rasa hampir panik / I felt I was close to panic",
-"16. Saya tidak bersemangat langsung / I was unable to become enthusiastic",
-"17. Saya rasa diri saya tidak berharga / I felt I wasn’t worth much",
-"18. Saya mudah tersinggung / I felt that I was rather touchy",
-"19. Saya sedar akan debaran jantung / I was aware of the action of my heart",
-"20. Saya rasa takut tanpa sebab / I felt scared without any good reason",
-"21. Saya rasa hidup ini tidak bererti / I felt that life was meaningless"
+/* ---------------- Questions (BM+EN, blinded) ---------------- */
+const items = [
+  { id:1,  text:"1. Saya rasa susah untuk bertenang\nI found it hard to wind down" },
+  { id:2,  text:"2. Saya sedar mulut saya rasa kering\nI was aware of dryness of my mouth" },
+  { id:3,  text:"3. Saya seolah-olah tidak dapat mengalami perasaan positif sama sekali\nI couldn’t seem to experience any positive feeling at all" },
+  { id:4,  text:"4. Saya mengalami kesukaran bernafas (contoh: bernafas terlalu cepat, tercungap-cungap walaupun tidak melakukan aktiviti fizikal)\nI experienced breathing difficulty (e.g., excessively rapid breathing, breathlessness in the absence of physical exertion)" },
+  { id:5,  text:"5. Saya rasa tidak bersemangat untuk memulakan sesuatu keadaan\nI found it difficult to work up the initiative to do things" },
+  { id:6,  text:"6. Saya cenderung bertindak secara berlebihan kepada sesuatu keadaan\nI tended to over-react to situations" },
+  { id:7,  text:"7. Saya pernah menggeletar (contohnya tangan)\nI experienced trembling (e.g., in the hands)" },
+  { id:8,  text:"8. Saya rasa terlalu gelisah\nI felt that I was using a lot of nervous energy" },
+  { id:9,  text:"9. Saya risau akan berlaku keadaan di mana saya panik dan berkelakuan bodoh\nI was worried about situations in which I might panic and make a fool of myself" },
+  { id:10, text:"10. Saya rasa tidak ada yang saya harapkan (putus harapan)\nI felt that I had nothing to look forward to" },
+  { id:11, text:"11. Saya dapati saya mudah resah\nI found myself getting agitated" },
+  { id:12, text:"12. Saya merasa sukar untuk relaks\nI found it difficult to relax" },
+  { id:13, text:"13. Saya rasa muram dan sedih\nI felt down-hearted and blue" },
+  { id:14, text:"14. Saya tidak boleh terima apa jua yang menghalangi saya daripada meneruskan apa yang saya sedang lakukan\nI was intolerant of anything that kept me from getting on with what I was doing" },
+  { id:15, text:"15. Saya rasa hampir panik\nI felt I was close to panic" },
+  { id:16, text:"16. Saya tidak bersemangat langsung\nI was unable to become enthusiastic about anything" },
+  { id:17, text:"17. Saya rasa diri saya tidak berharga\nI felt I wasn’t worth much as a person" },
+  { id:18, text:"18. Saya mudah tersinggung\nI felt that I was rather touchy" },
+  { id:19, text:"19. Walaupun saya tidak melakukan aktiviti fizikal, saya sedar akan debaran jantung saya (contoh: degupan jantung lebih cepat)\nI was aware of the action of my heart in the absence of physical exertion (e.g., sense of heart rate increase, heart missing a beat)" },
+  { id:20, text:"20. Saya rasa takut tanpa sebab\nI felt scared without any good reason" },
+  { id:21, text:"21. Saya rasa hidup ini tidak bererti lagi\nI felt that life was meaningless" }
 ];
-const dep=[3,5,10,13,16,17,21],anx=[2,4,7,9,15,19,20],str=[1,6,8,11,12,14,18];
-const qEl=document.getElementById('questions');
-items.forEach((t,i)=>{
-  const d=document.createElement('div');d.className='q';
-  d.innerHTML=`<div>${t}</div>
-  <div class='opts'>
-  ${[0,1,2,3].map(v=>`<label><input type='radio' name='q${i+1}' value='${v}'><div class='opt'>${v}</div></label>`).join('')}
-  </div>`;
-  qEl.appendChild(d);
+
+// domain sets
+const dep = new Set([3,5,10,13,16,17,21]);
+const anx = new Set([2,4,7,9,15,19,20]);
+const str = new Set([1,6,8,11,12,14,18]);
+
+// render questions
+const qsEl = document.getElementById('questions');
+items.forEach(({id,text})=>{
+  const block = document.createElement('div');
+  block.className='q';
+  block.innerHTML = `
+    <h3>${text} <span class="req">*</span></h3>
+    <div class="opts" role="radiogroup" aria-label="Question ${id}">
+      ${[0,1,2,3].map(v=>`
+        <label>
+          <input type="radio" name="q${id}" value="${v}" aria-label="${v}">
+          <div class="opt"><strong>${v}</strong></div>
+        </label>
+      `).join('')}
+    </div>`;
+  qsEl.appendChild(block);
 });
-function sev(domain,score){
-  if(domain==='d'&&score>=14)return'extreme';
-  if(domain==='d'&&score>=11)return'severe';
-  if(domain==='d'&&score>=8)return'moderate';
-  if(domain==='d'&&score>=6)return'mild';
-  if(domain==='a'&&score>=11)return'extreme';
-  if(domain==='a'&&score>=9)return'severe';
-  if(domain==='a'&&score>=7)return'moderate';
-  if(domain==='a'&&score>=5)return'mild';
-  if(domain==='s'&&score>=18)return'extreme';
-  if(domain==='s'&&score>=14)return'severe';
-  if(domain==='s'&&score>=10)return'moderate';
-  if(domain==='s'&&score>=8)return'mild';
-  return'normal';
+
+const form = document.getElementById('dassForm');
+const btnScore = document.getElementById('btnScore');
+const btnReset = document.getElementById('btnReset');
+const btnPrint = document.getElementById('btnPrint');
+const btnCopy = document.getElementById('btnCopy');
+const btnClearResults = document.getElementById('btnClearResults');
+const progress = document.getElementById('progress');
+
+function answeredCount(){ let c=0; for(let i=1;i<=21;i++){ if(form.querySelector(`input[name=q${i}]:checked`)) c++; } return c; }
+function updateProgress(){ progress.textContent = `${answeredCount()}/21 dijawab`; }
+form.addEventListener('change', updateProgress); updateProgress();
+
+function calc(){
+  let missing=[]; const vals={};
+  for(let i=1;i<=21;i++){
+    const sel = form.querySelector(`input[name=q${i}]:checked`);
+    if(!sel) missing.push(i); else vals[i]=Number(sel.value);
+  }
+  if(missing.length){ alert(`Please answer all questions. Missing: ${missing.join(', ')}`); return null; }
+  let sDep=0,sAnx=0,sStr=0;
+  for(let i=1;i<=21;i++){
+    const v = vals[i];
+    if(dep.has(i)) sDep+=v; else if(anx.has(i)) sAnx+=v; else if(str.has(i)) sStr+=v;
+  }
+  return {Depression:sDep, Anxiety:sAnx, Stress:sStr}; // raw (no ×2)
 }
-document.getElementById('btnScore').onclick=()=>{
- let v={};for(let i=1;i<=21;i++){let s=document.querySelector(`input[name=q${i}]:checked`);v[i]=s?+s.value:null}
- if(Object.values(v).some(x=>x===null)){alert('Sila jawab semua soalan.');return;}
- let sd=0,sa=0,ss=0;
- for(let i=1;i<=21;i++){if(dep.includes(i))sd+=v[i];else if(anx.includes(i))sa+=v[i];else if(str.includes(i))ss+=v[i];}
- const ds=sev('d',sd),as=sev('a',sa),ssv=sev('s',ss);
- document.getElementById('depNum').textContent=sd;document.getElementById('anxNum').textContent=sa;document.getElementById('strNum').textContent=ss;
- document.getElementById('depSev').className='sev '+ds;document.getElementById('anxSev').className='sev '+as;document.getElementById('strSev').className='sev '+ssv;
- const map={normal:'Normal',mild:'Mild',moderate:'Moderate',severe:'Severe',extreme:'Extremely Severe'};
- document.getElementById('depSev').textContent=map[ds];document.getElementById('anxSev').textContent=map[as];document.getElementById('strSev').textContent=map[ssv];
-};
+
+function severity(domain,score){
+  if(domain==='Depression'){
+    if(score>=14) return {label:'Extremely Severe',cls:'extreme'};
+    if(score>=11) return {label:'Severe',cls:'severe'};
+    if(score>=8)  return {label:'Moderate',cls:'moderate'};
+    if(score>=6)  return {label:'Mild',cls:'mild'};
+    return {label:'Normal',cls:'normal'};
+  }
+  if(domain==='Anxiety'){
+    if(score>=11) return {label:'Extremely Severe',cls:'extreme'};
+    if(score>=9)  return {label:'Severe',cls:'severe'};
+    if(score>=7)  return {label:'Moderate',cls:'moderate'};
+    if(score>=5)  return {label:'Mild',cls:'mild'};
+    return {label:'Normal',cls:'normal'};
+  }
+  // Stress
+  if(score>=18) return {label:'Extremely Severe',cls:'extreme'};
+  if(score>=14) return {label:'Severe',cls:'severe'};
+  if(score>=10) return {label:'Moderate',cls:'moderate'};
+  if(score>=8)  return {label:'Mild',cls:'mild'};
+  return {label:'Normal',cls:'normal'};
+}
+
+function paint(scores){
+  const nodes = {
+    Depression: document.querySelector('#scoreDep'),
+    Anxiety: document.querySelector('#scoreAnx'),
+    Stress: document.querySelector('#scoreStr'),
+  };
+  for(const k of Object.keys(nodes)){
+    const el = nodes[k];
+    const num = el.querySelector('[data-num]');
+    const sev = el.querySelector('[data-sev]');
+    const band = severity(k, scores[k]);
+    num.textContent = String(scores[k]);
+    sev.textContent = band.label;
+    sev.className = `sev ${band.cls}`;
+  }
+}
+
+document.getElementById('btnScore').addEventListener('click', ()=>{
+  const scores = calc(); if(!scores) return; paint(scores);
+});
+btnReset.addEventListener('click', ()=>{ form.reset(); updateProgress(); paint({Depression:0,Anxiety:0,Stress:0}); });
+btnPrint.addEventListener('click', ()=>{ window.print(); });
+
+// theme toggle
+document.getElementById('themeToggle').addEventListener('click', ()=>{ document.body.classList.toggle('dark') });
+
+// copy summary
+btnCopy.addEventListener('click', ()=>{
+  const d = document.querySelector('#scoreDep [data-num]').textContent;
+  const a = document.querySelector('#scoreAnx [data-num]').textContent;
+  const s = document.querySelector('#scoreStr [data-num]').textContent;
+  const ds = document.querySelector('#scoreDep [data-sev]').textContent;
+  const as = document.querySelector('#scoreAnx [data-sev]').textContent;
+  const ss = document.querySelector('#scoreStr [data-sev]').textContent;
+  const demo = [
+    Array.from(document.querySelectorAll('input[name=role]:checked')).map(el=>el.value).join('|'),
+    Array.from(document.querySelectorAll('input[name=gender_ck]:checked')).map(el=>el.value).join('|'),
+    Array.from(document.querySelectorAll('input[name=age_band]:checked')).map(el=>el.value).join('|'),
+  ].filter(Boolean).join(' • ');
+  const txt = `DASS-21 Summary\nDepression: ${d} (${ds})\nAnxiety: ${a} (${as})\nStress: ${s} (${ss})${demo?`\nDemo: ${demo}`:''}`;
+  navigator.clipboard.writeText(txt).then(()=>{ btnCopy.textContent='Copied!'; setTimeout(()=>btnCopy.textContent='Salin ringkasan',1200); });
+});
+btnClearResults.addEventListener('click', ()=>{ paint({Depression:0,Anxiety:0,Stress:0}); });
+
+/* --------------- CSV helpers (author only) --------------- */
+function generateCSVString(row){
+  const headers = ['timestamp','id','role','gender','age_band','depression','anxiety','stress','sev_depression','sev_anxiety','sev_stress'];
+  const headerLine = headers.join(',');
+  const valueLine = headers.map(h=>JSON.stringify(row[h] ?? '')).join(',');
+  return [headerLine, valueLine].join('\n');
+}
+function downloadCSV(row){
+  const csv = generateCSVString(row);
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const ts = new Date().toISOString().replaceAll(':','-');
+  a.download = `dass21_${ts}.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function currentResultRow(){
+  const d = document.querySelector('#scoreDep [data-num]').textContent;
+  const a = document.querySelector('#scoreAnx [data-num]').textContent;
+  const s = document.querySelector('#scoreStr [data-num]').textContent;
+  const ds = document.querySelector('#scoreDep [data-sev]').textContent;
+  const as = document.querySelector('#scoreAnx [data-sev]').textContent;
+  const ss = document.querySelector('#scoreStr [data-sev]').textContent;
+  return {
+    timestamp: new Date().toISOString(),
+    id: '',
+    role: Array.from(document.querySelectorAll('input[name=role]:checked')).map(el=>el.value).join('|'),
+    gender: Array.from(document.querySelectorAll('input[name=gender_ck]:checked')).map(el=>el.value).join('|'),
+    age_band: Array.from(document.querySelectorAll('input[name=age_band]:checked')).map(el=>el.value).join('|'),
+    depression: Number(d||0), anxiety: Number(a||0), stress: Number(s||0),
+    sev_depression: ds, sev_anxiety: as, sev_stress: ss,
+  };
+}
+
+/* --------------- Google Sheet (Apps Script) --------------- */
+const SHEET_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // ganti selepas deploy Web App (/exec)
+const pdpa = document.getElementById('pdpa');
+const btnSaveSheet = document.getElementById('btnSaveSheet');
+pdpa.addEventListener('change', ()=>{ btnSaveSheet.disabled = !pdpa.checked; });
+
+async function saveToSheet(){
+  if(!pdpa.checked){ alert('Sila tandakan PDPA consent dahulu.'); return; }
+  if(SHEET_ENDPOINT.startsWith('YOUR_')){ alert('Sila set Apps Script URL dahulu.'); return; }
+  const row = currentResultRow();
+  try{
+    const res = await fetch(SHEET_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(row) });
+    if(!res.ok) throw new Error(await res.text());
+    btnSaveSheet.textContent = 'Saved ✔';
+    setTimeout(()=>btnSaveSheet.textContent='Save to Sheet',1500);
+  }catch(err){ alert('Save error: '+err.message); }
+}
+
+/* --------------- Author access control --------------- */
+const ADMIN_PASSWORD = 'ptckb2025';
+const btnAdmin = document.getElementById('btnAdmin');
+const btnDownloadCSVEl = document.getElementById('btnDownloadCSV');
+
+function setAdminMode(on){
+  if(on){
+    localStorage.setItem('dass_admin','1');
+    btnAdmin.textContent='Author: Logout';
+    btnDownloadCSVEl.style.display='inline-block';
+    btnSaveSheet.style.display='inline-block';
+  }else{
+    localStorage.removeItem('dass_admin');
+    btnAdmin.textContent='Author Login';
+    btnDownloadCSVEl.style.display='none';
+    btnSaveSheet.style.display='none';
+  }
+}
+setAdminMode(localStorage.getItem('dass_admin')==='1');
+
+btnAdmin.addEventListener('click', ()=>{
+  const isAdmin = localStorage.getItem('dass_admin')==='1';
+  if(isAdmin){ setAdminMode(false); return; }
+  const pw = prompt('Author password:');
+  if(pw===ADMIN_PASSWORD){ setAdminMode(true); alert('Author mode enabled'); }
+  else if(pw!==null){ alert('Wrong password'); }
+});
+
+document.getElementById('btnDownloadCSV').addEventListener('click', ()=>{
+  const isAdmin = localStorage.getItem('dass_admin')==='1';
+  if(!isAdmin){ alert('Hanya author boleh memuat turun CSV.'); return; }
+  const row = currentResultRow(); downloadCSV(row);
+});
+btnSaveSheet.addEventListener('click', saveToSheet);
+
+/* --------------- Self-test (silent) --------------- */
+try{
+  const _row = {timestamp:'2025-11-04T00:00:00Z',id:'',role:'Student',gender:'Female',age_band:'26–35',depression:10,anxiety:8,stress:14,sev_depression:'Mild',sev_anxiety:'Normal',sev_stress:'Normal'};
+  const _csv = generateCSVString(_row);
+  console.assert(_csv.split('\n').length===2, 'CSV 2 lines');
+  console.assert(_csv.startsWith('timestamp,id,role'), 'CSV header ok');
+}catch(e){ console.warn('Self-test failed:', e); }
 </script>
 </body>
 </html>
-
