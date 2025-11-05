@@ -18,7 +18,7 @@
   --accent:#f0b429;   /* UiTM gold */
   --accent2:#5a2e8a;  /* UiTM purple */
 
-  /* Severity colors (kept vivid) */
+  /* Severity colors */
   --ok:#34d399; --mild:#fbbf24; --mod:#fb923c; --sev:#ef4444; --xsev:#f43f5e;
 }
 
@@ -66,7 +66,7 @@ button{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight
 .q h3{margin:0 0 10px;font-size:16px;line-height:1.4;white-space:pre-line}
 .opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 
-/* Options with strong contrast on navy */
+/* Options */
 .opt{
   padding:10px;border:1px solid #2b4fb6;border-radius:10px;text-align:center;
   cursor:pointer;background:#1144a4;color:#eef3ff;transition:all .15s ease;
@@ -75,7 +75,7 @@ button{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight
 input[type=radio]{display:none}
 input[type=radio]:checked + .opt{
   border-color:var(--accent);
-  background:linear-gradient(180deg,rgba(240,180,41,.42),rgba(90,46,138,.28)); /* gold→purple */
+  background:linear-gradient(180deg,rgba(240,180,41,.42),rgba(90,46,138,.28));
   color:#0b0b0b;font-weight:800;box-shadow:0 0 0 3px rgba(240,180,41,.35);
 }
 
@@ -93,6 +93,31 @@ footer{margin-top:24px;color:var(--muted);font-size:12px}
 
 /* Links */
 a{color:#7dd3fc}
+
+/* ===== Corner Ribbon (UiTM) ===== */
+.brand-ribbon{
+  position:fixed; inset:0 auto auto 0; width:128px; height:128px; z-index:1000;
+  pointer-events:none;
+}
+.brand-ribbon .ribbon-bar{
+  position:absolute; top:-44px; left:-44px; width:240px; height:64px;
+  background:linear-gradient(90deg,var(--accent2),var(--accent));
+  transform:rotate(-45deg);
+  box-shadow:0 10px 24px rgba(0,0,0,.25);
+  border-radius:6px;
+}
+.brand-ribbon .ribbon-logo{
+  position:absolute; top:14px; left:14px; width:56px; height:auto;
+  background:#fff; padding:7px; border-radius:12px;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 6px 18px rgba(0,0,0,.22);
+}
+@media (max-width:520px){
+  .brand-ribbon{ width:100px; height:100px; }
+  .brand-ribbon .ribbon-bar{ top:-36px; left:-36px; width:196px; height:54px; }
+  .brand-ribbon .ribbon-logo{ top:12px; left:12px; width:48px; padding:6px; }
+}
+@media print{ .brand-ribbon{ display:none } }
 
 /* ===== Toggled theme = Classic LIGHT (white UI) ===== */
 body.dark{
@@ -116,6 +141,14 @@ body.dark input[type=radio]:checked + .opt{
 </style>
 </head>
 <body>
+
+<!-- Corner Ribbon (UiTM) -->
+<a class="brand-ribbon" aria-label="UiTM">
+  <span class="ribbon-bar"></span>
+  <img src="uitm-logo.png" alt="Universiti Teknologi MARA" class="ribbon-logo"
+       onerror="this.style.display='none'">
+</a>
+
 <div class="wrap">
   <header>
     <div class="masthead">
