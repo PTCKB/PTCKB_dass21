@@ -30,26 +30,31 @@ header{display:block;margin-bottom:16px;border-bottom:1px solid var(--border);pa
 /* Masthead */
 .masthead{display:flex;align-items:center;gap:18px;margin-bottom:8px}
 .uitm-logo{
-  flex:0 0 70px;height:70px;
-  display:flex;align-items:center;justify-content:center;
-  background:#ffffff;                      /* white badge to fix transparent logo */
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:12px;
-  padding:6px;
+  flex:0 0 70px;height:70px;display:flex;align-items:center;justify-content:center;
+  background:#ffffff;border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:6px;
   box-shadow:0 0 12px rgba(255,255,255,.08);
 }
 .uitm-logo img{max-height:58px;width:auto;display:block}
 .uitm-logo .fallback{
   display:none;width:100%;height:100%;border-radius:10px;
-  background:linear-gradient(135deg,#5a2e8a,#f0b429);color:#fff;
-  font-weight:800;align-items:center;justify-content:center
+  background:linear-gradient(135deg,#5a2e8a,#f0b429);color:#fff;font-weight:800;align-items:center;justify-content:center
 }
 .titles h2{margin:0;font-size:20px;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;font-weight:800}
 .titles h3{margin:2px 0 0;font-size:16px;letter-spacing:.3px;text-transform:uppercase;line-height:1.2;font-weight:800}
 
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
 button{appearance:none;border:0;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
-.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#0b0b0b}
+
+/* Primary button — HIGH CONTRAST in both themes */
+.primary{
+  background:linear-gradient(90deg,var(--accent),var(--accent2)); /* gold → purple */
+  color:#0b0b0b; border:2px solid rgba(255,255,255,.22); border-radius:12px;
+  font-weight:800; letter-spacing:.2px;
+  text-shadow:0 1px 0 rgba(255,255,255,.35); /* boost legibility on navy */
+}
+.primary:hover{ filter:brightness(1.06); box-shadow:0 0 0 3px rgba(240,180,41,.25); }
+.primary:focus-visible{ outline:3px solid #6ee7ff; outline-offset:2px; }
+
 .ghost{background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--ink)}
 .okbtn{background:rgba(52,211,153,.18);border:1px solid rgba(52,211,153,.6);color:#e7fff5}
 
@@ -96,20 +101,16 @@ a{color:#7dd3fc}
 
 /* ===== Corner Ribbon (UiTM) ===== */
 .brand-ribbon{
-  position:fixed; inset:0 auto auto 0; width:128px; height:128px; z-index:1000;
-  pointer-events:none;
+  position:fixed; inset:0 auto auto 0; width:128px; height:128px; z-index:1000; pointer-events:none;
 }
 .brand-ribbon .ribbon-bar{
   position:absolute; top:-44px; left:-44px; width:240px; height:64px;
   background:linear-gradient(90deg,var(--accent2),var(--accent));
-  transform:rotate(-45deg);
-  box-shadow:0 10px 24px rgba(0,0,0,.25);
-  border-radius:6px;
+  transform:rotate(-45deg); box-shadow:0 10px 24px rgba(0,0,0,.25); border-radius:6px;
 }
 .brand-ribbon .ribbon-logo{
   position:absolute; top:14px; left:14px; width:56px; height:auto;
-  background:#fff; padding:7px; border-radius:12px;
-  border:1px solid rgba(0,0,0,.08);
+  background:#fff; padding:7px; border-radius:12px; border:1px solid rgba(0,0,0,.08);
   box-shadow:0 6px 18px rgba(0,0,0,.22);
 }
 @media (max-width:520px){
@@ -121,23 +122,22 @@ a{color:#7dd3fc}
 
 /* ===== Toggled theme = Classic LIGHT (white UI) ===== */
 body.dark{
-  --bg:#ffffff; --ink:#111827; --muted:#4b5563;
-  --card:#ffffff; --border:#e5e7eb;
+  --bg:#ffffff; --ink:#111827; --muted:#4b5563; --card:#ffffff; --border:#e5e7eb;
   --accent:#5a2e8a; --accent2:#f0b429;
 }
 body.dark{ background:var(--bg); color:var(--ink); }
 body.dark .card{ background:var(--card); border:1px solid var(--border); }
 body.dark header{ border-bottom:1px solid var(--border); }
 body.dark .q, body.dark .score{ background:#fafafa; border:1px solid var(--border); }
-body.dark .chip{ border:1px solid rgba(17,24,39,.15); color:var(--muted); background:#fff; }
-body.dark .ghost{ border:1px solid rgba(17,24,39,.16); color:var(--ink); }
+body.dark .chip{ border:1px solid rgba(17,24,39,.15); color:#4b5563; background:#fff; }
+body.dark .ghost{ border:1px solid rgba(17,24,39,.16); color:#111827; }
 body.dark .opt{ background:#fff; color:#111827; border:1px solid #cbd5e1; }
 body.dark .opt:hover{ background:#eef2ff; border-color:#5b21b6; }
-body.dark input[type=radio]:checked + .opt{
-  border-color:#5a2e8a;
-  background:linear-gradient(180deg,rgba(90,46,138,.22),rgba(240,180,41,.18));
-  color:#111827; box-shadow:0 0 0 2px rgba(90,46,138,.25);
+/* Primary button override in Classic Light for max contrast */
+body.dark .primary{
+  background:linear-gradient(90deg,#5a2e8a,#f0b429); color:#111827; border:2px solid rgba(17,24,39,.22); text-shadow:none;
 }
+body.dark .primary:hover{ filter:brightness(1.05); box-shadow:0 0 0 3px rgba(90,46,138,.22); }
 </style>
 </head>
 <body>
@@ -145,16 +145,14 @@ body.dark input[type=radio]:checked + .opt{
 <!-- Corner Ribbon (UiTM) -->
 <a class="brand-ribbon" aria-label="UiTM">
   <span class="ribbon-bar"></span>
-  <img src="uitm-logo.png" alt="Universiti Teknologi MARA" class="ribbon-logo"
-       onerror="this.style.display='none'">
+  <img src="uitm-logo.png" alt="Universiti Teknologi MARA" class="ribbon-logo" onerror="this.style.display='none'">
 </a>
 
 <div class="wrap">
   <header>
     <div class="masthead">
       <div class="uitm-logo">
-        <img alt="Universiti Teknologi MARA" src="uitm-logo.png"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+        <img alt="Universiti Teknologi MARA" src="uitm-logo.png" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
         <div class="fallback">UiTM</div>
       </div>
       <div class="titles">
@@ -283,13 +281,14 @@ body.dark input[type=radio]:checked + .opt{
     </aside>
   </main>
 
-  <footer>
-    DASS-21 items © P. F. Lovibond &amp; S. H. Lovibond.
-  </footer>
+  <footer>DASS-21 items © P. F. Lovibond &amp; S. H. Lovibond.</footer>
 </div>
 
 <script>
-/* ===== Theme toggle: default NAVY (high-contrast), toggled = CLASSIC LIGHT ===== */
+/* ====== 0) HARD-CODED ENDPOINT — GANTI SEKALI SAHAJA ====== */
+const SHEET_ENDPOINT = 'PASTE_WEB_APP_URL_HERE?token=ptckb2025'; // << GANTI SEKALI SAHAJA
+
+/* ===== Theme toggle ===== */
 const themeBtn = document.getElementById('themeToggle');
 function applySavedTheme(){
   const saved = localStorage.getItem('theme') || 'navy';
@@ -418,14 +417,62 @@ function paint(scores){
   }
 }
 
-document.getElementById('btnScore').addEventListener('click', ()=>{
-  const scores = calc(); if(!scores) return; paint(scores);
-});
-btnReset.addEventListener('click', ()=>{ form.reset(); updateProgress(); paint({Depression:0,Anxiety:0,Stress:0}); });
-btnPrint.addEventListener('click', ()=>{ window.print(); });
+/* ====== PDPA + Save controls ====== */
+const pdpa = document.getElementById('pdpa');
+const btnSaveSheet = document.getElementById('btnSaveSheet');
+pdpa.addEventListener('change', ()=>{ btnSaveSheet.disabled = !pdpa.checked; });
 
-// copy summary
-btnCopy.addEventListener('click', ()=>{
+/* --------------- Google Sheet (Apps Script) --------------- */
+async function saveToSheet(){
+  if(!pdpa.checked){ alert('Please tick PDPA consent first. / Sila tandakan persetujuan PDPA dahulu.'); return; }
+  if(!SHEET_ENDPOINT){ alert('SHEET_ENDPOINT belum diisi. Sila set URL Web App /exec'); return; }
+
+  const d = document.querySelector('#scoreDep [data-num]').textContent;
+  const a = document.querySelector('#scoreAnx [data-num]').textContent;
+  const s = document.querySelector('#scoreStr [data-num]').textContent;
+  const ds = document.querySelector('#scoreDep [data-sev]').textContent;
+  const as = document.querySelector('#scoreAnx [data-sev]').textContent;
+  const ss = document.querySelector('#scoreStr [data-sev]').textContent;
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    id: '',
+    role: Array.from(document.querySelectorAll('input[name=role]:checked')).map(el=>el.value).join('|'),
+    gender: Array.from(document.querySelectorAll('input[name=gender_ck]:checked')).map(el=>el.value).join('|'),
+    age_band: Array.from(document.querySelectorAll('input[name=age_band]:checked')).map(el=>el.value).join('|'),
+    depression: Number(d||0), anxiety: Number(a||0), stress: Number(s||0),
+    sev_depression: ds, sev_anxiety: as, sev_stress: ss,
+    theme: (document.body.classList.contains('dark') ? 'classic' : 'navy')
+  };
+
+  const res = await fetch(SHEET_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  if(!res.ok){
+    const txt = await res.text().catch(()=>String(res.status));
+    throw new Error(txt || ('HTTP '+res.status));
+  }
+}
+
+/* ====== Score/Reset/Print/Copy/CSV ====== */
+document.getElementById('btnScore').addEventListener('click', async ()=>{
+  const scores = calc(); if(!scores) return;
+  paint(scores);
+
+  // === Auto-append bila PDPA setuju & endpoint sudah di-set ===
+  try{
+    if (pdpa.checked && SHEET_ENDPOINT) {
+      await saveToSheet();
+    }
+  }catch(e){
+    console.warn('Auto-append failed:', e);
+  }
+});
+
+document.getElementById('btnReset').addEventListener('click', ()=>{
+  document.getElementById('dassForm').reset(); updateProgress(); paint({Depression:0,Anxiety:0,Stress:0});
+});
+document.getElementById('btnPrint').addEventListener('click', ()=>{ window.print(); });
+
+document.getElementById('btnCopy').addEventListener('click', ()=>{
   const d = document.querySelector('#scoreDep [data-num]').textContent;
   const a = document.querySelector('#scoreAnx [data-num]').textContent;
   const s = document.querySelector('#scoreStr [data-num]').textContent;
@@ -441,11 +488,14 @@ btnCopy.addEventListener('click', ()=>{
 Depression: ${d} (${ds})
 Anxiety: ${a} (${as})
 Stress: ${s} (${ss})${demo?`\nDemo: ${demo}`:''}`;
-  navigator.clipboard.writeText(txt).then(()=>{ btnCopy.textContent='Copied!'; setTimeout(()=>btnCopy.textContent='Copy Summary / Salin ringkasan',1200); });
+  navigator.clipboard.writeText(txt).then(()=>{ 
+    const btn = document.getElementById('btnCopy');
+    btn.textContent='Copied!';
+    setTimeout(()=>btn.textContent='Copy Summary / Salin ringkasan',1200);
+  });
 });
-btnClearResults.addEventListener('click', ()=>{ paint({Depression:0,Anxiety:0,Stress:0}); });
 
-/* --------------- CSV helpers (author only) --------------- */
+/* --------------- CSV helpers (author only — hidden by default) --------------- */
 function generateCSVString(row){
   const headers = ['timestamp','id','role','gender','age_band','depression','anxiety','stress','sev_depression','sev_anxiety','sev_stress'];
   const headerLine = headers.join(',');
@@ -479,29 +529,10 @@ function currentResultRow(){
   };
 }
 
-/* --------------- Google Sheet (Apps Script) --------------- */
-const SHEET_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL'; // set later
-const pdpa = document.getElementById('pdpa');
-const btnSaveSheet = document.getElementById('btnSaveSheet');
-pdpa.addEventListener('change', ()=>{ btnSaveSheet.disabled = !pdpa.checked; });
-
-async function saveToSheet(){
-  if(!pdpa.checked){ alert('Please tick PDPA consent first. / Sila tandakan persetujuan PDPA dahulu.'); return; }
-  if(SHEET_ENDPOINT.startsWith('YOUR_')){ alert('Set Apps Script URL first. / Sila tetapkan URL Apps Script dahulu.'); return; }
-  const row = currentResultRow();
-  try{
-    const res = await fetch(SHEET_ENDPOINT,{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(row) });
-    if(!res.ok) throw new Error(await res.text());
-    btnSaveSheet.textContent = 'Saved ✔';
-    setTimeout(()=>btnSaveSheet.textContent='Save to Sheet',1500);
-  }catch(err){ alert('Save error: '+err.message); }
-}
-
-/* --------------- Author access control --------------- */
+/* --------------- Author access control (optional UI later) --------------- */
 const ADMIN_PASSWORD = 'ptckb2025';
 const btnAdmin = document.getElementById('btnAdmin');
 const btnDownloadCSVEl = document.getElementById('btnDownloadCSV');
-
 function setAdminMode(on){
   if(on){
     localStorage.setItem('dass_admin','1');
@@ -516,7 +547,6 @@ function setAdminMode(on){
   }
 }
 setAdminMode(localStorage.getItem('dass_admin')==='1');
-
 btnAdmin.addEventListener('click', ()=>{
   const isAdmin = localStorage.getItem('dass_admin')==='1';
   if(isAdmin){ setAdminMode(false); return; }
@@ -524,13 +554,6 @@ btnAdmin.addEventListener('click', ()=>{
   if(pw===ADMIN_PASSWORD){ setAdminMode(true); alert('Author mode enabled'); }
   else if(pw!==null){ alert('Wrong password'); }
 });
-
-document.getElementById('btnDownloadCSV').addEventListener('click', ()=>{
-  const isAdmin = localStorage.getItem('dass_admin')==='1';
-  if(!isAdmin){ alert('Author only. / Hanya author.'); return; }
-  const row = currentResultRow(); downloadCSV(row);
-});
-btnSaveSheet.addEventListener('click', saveToSheet);
 
 /* --------------- Self-test (silent) --------------- */
 try{
